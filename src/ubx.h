@@ -575,6 +575,7 @@ public:
 	virtual ~GPSDriverUBX();
 	int receive(unsigned timeout);
 	int configure(unsigned &baudrate, OutputMode output_mode);
+	void configureSuveyInAccLimit(uint32_t survey_in_acc_limit);
 
 	int restartSurveyIn();
 private:
@@ -664,6 +665,7 @@ private:
 	uint32_t		_ubx_version;
 	bool			_use_nav_pvt;
 	OutputMode		_output_mode = OutputMode::GPS;
+	uint32_t		_survey_in_acc_limit;
 
 	rtcm_message_t	*_rtcm_message = nullptr;
 
