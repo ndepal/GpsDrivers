@@ -92,8 +92,9 @@ GPSDriverUBX::GPSDriverUBX(Interface interface, GPSCallbackPtr callback, void *c
 	_ack_waiting_msg(0),
 	_ubx_version(0),
 	_use_nav_pvt(false),
-	_interface(interface),
-	_survey_in_acc_limit(UBX_TX_CFG_TMODE3_SVINACCLIMIT)
+	_survey_in_acc_limit(UBX_TX_CFG_TMODE3_SVINACCLIMIT),
+	_survey_in_dur(UBX_TX_CFG_TMODE3_SVINMINDUR),
+	_interface(interface)
 {
 	decodeInit();
 }
@@ -326,6 +327,11 @@ void GPSDriverUBX::configureSuveyInAccLimit(uint32_t survey_in_acc_limit)
 	_survey_in_acc_limit = survey_in_acc_limit;
 }
 
+void GPSDriverUBX::configureSuveyInDur(uint32_t survey_in_dur)
+{
+	_survey_in_acc_limit = survey_in_dur;
+}
+
 int GPSDriverUBX::restartSurveyIn()
 {
 	if (_output_mode != OutputMode::RTCM) {
@@ -354,7 +360,7 @@ int GPSDriverUBX::restartSurveyIn()
 
 	memset(&_buf.payload_tx_cfg_tmode3, 0, sizeof(_buf.payload_tx_cfg_tmode3));
 	_buf.payload_tx_cfg_tmode3.flags        = UBX_TX_CFG_TMODE3_FLAGS;
-	_buf.payload_tx_cfg_tmode3.svinMinDur   = UBX_TX_CFG_TMODE3_SVINMINDUR;
+	_buf.payload_tx_cfg_tmode3.svinMinDur   = _survey_in_dur;
 	_buf.payload_tx_cfg_tmode3.svinAccLimit = _survey_in_acc_limit;
 
 	if (!sendMessage(UBX_MSG_CFG_TMODE3, (uint8_t *)&_buf, sizeof(_buf.payload_tx_cfg_tmode3))) {

@@ -576,6 +576,7 @@ public:
 	int receive(unsigned timeout);
 	int configure(unsigned &baudrate, OutputMode output_mode);
 	void configureSuveyInAccLimit(uint32_t survey_in_acc_limit);
+	void configureSuveyInDur(uint32_t survey_in_dur);
 
 	int restartSurveyIn();
 private:
@@ -666,6 +667,7 @@ private:
 	bool			_use_nav_pvt;
 	OutputMode		_output_mode = OutputMode::GPS;
 	uint32_t		_survey_in_acc_limit;
+	uint32_t		_survey_in_dur;
 
 	rtcm_message_t	*_rtcm_message = nullptr;
 
